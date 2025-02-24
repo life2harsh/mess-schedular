@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mess Schedules</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(var(--angle, 45deg), #EE7752, #E73C7E, #23A6D5, #23D5AB);
+      background-size: 400% 400%;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: #fff;
+      line-height: 1.6;
+      transition: background 0.5s;
+      animation: gradientAnimation 20s ease infinite;
+    }
+
+    @keyframes gradientAnimation {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    .centered {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .loader {
+      width: 40px;
+      height: 40px;
+      border: 4px solid rgba(255, 255, 255, 0.3);
+      border-top: 4px solid #fff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    #content {
+      display: none;
+      position: relative;
+      width: 100%;
+    }
+
+    .top-row {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .top-row h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+    .top-row button {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 6px;
+      padding: 8px 16px;
+      color: #fff;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-bottom: 10px;
+      font-size: 14px;
+    }
+    .top-row button:hover {
+      background: rgba(255,255,255,0.2);
+    }
+
+    .special-dishes-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      animation: cardFadeIn 1s ease-out forwards;
+      transition: transform 0.3s, box-shadow 0.3s;
+      max-width: 1200px;
+      margin: 0 auto 20px auto;
+    }
+    .special-dishes-row:hover {
+      transform: scale(1.02);
+    }
+
+    .bottom-row {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    @keyframes cardFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .card {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      animation: cardFadeIn 1s ease-out forwards;
+      transition: transform 0.3s, box-shadow 0.3s;
+      flex: 1;
+      min-width: 300px;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+
+    .special-dish-item {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 8px;
+      border-radius: 6px;
+      transition: background 0.3s, transform 0.3s;
+      font-size: 13px;
+      line-height: 1.4;
+    }
+    .special-dish-item:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .main-schedule .card-header h1,
+    .branch-128 .card-header h1 {
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .meal-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    .meal {
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      padding: 8px;
+      transition: background 0.3s;
+    }
+    .meal:hover {
+      background: rgba(255,255,255,0.1);
+    }
+    .meal h3 {
+      margin-bottom: 5px;
+      font-size: 16px;
+    }
+    .meal p {
+      font-size: 14px;
+    }
+    .meal.active {
+      background: rgba(250, 204, 21, 0.3);
+      border-left: 5px solid #facc15;
+      transform: scale(1.05);
+    }
+    .dish-item {
+      background: rgba(255,255,255,0.05);
+      border-radius: 6px;
+      padding: 6px;
+      transition: background 0.3s;
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .dish-item:hover {
+      background: rgba(255,255,255,0.1);
+    }
+
+    #allDaysWrapper {
+      display: none;
+      max-width: 1200px;
+      margin: 0 auto 40px auto;
+      padding: 20px;
+    }
+    .all-days-title {
+      font-size: 20px;
+      margin-bottom: 15px;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .all-days-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .day-card {
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      animation: cardFadeIn 1s ease-out forwards;
+      transition: transform 0.3s, box-shadow 0.3s;
+      width: 100%;
+    }
+    .day-card:hover {
+      transform: scale(1.02);
+    }
+    .day-card h3 {
+      margin-bottom: 10px;
+      font-size: 18px;
+      text-align: center;
+    }
+    .subcards-day {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .subcard-day {
+      background: rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 10px;
+      transition: background 0.3s, transform 0.3s;
+      flex: 1;
+      min-width: 120px;
+      margin-bottom: 8px;
+    }
+    .subcard-day:hover {
+      background: rgba(255,255,255,0.15);
+      transform: scale(1.01);
+    }
+    .subcard-day h4 {
+      font-size: 16px;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+    .mealType {
+      font-weight: 600;
+      color: #facc15;
+      margin-right: 4px;
+    }
+    .no-data {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    #scrollTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: none;
+      transition: background 0.3s;
+      z-index: 9999;
+      font-size: 14px;
+    }
+    #scrollTopBtn:hover {
+      background: rgba(255,255,255,0.25);
+    }
+
+    @media (max-width: 768px) {
+      .top-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .top-row button {
+        margin-top: 10px;
+        align-self: flex-end;
+      }
+      .special-dish-item {
+        font-size: 12px;
+      }
+      .card {
+        min-width: 250px;
+      }
+      .day-card {
+        min-width: auto;
+      }
+      #scrollTopBtn {
+        bottom: 20px;
+        right: 20px;
+      }
+    }
+  </style>
+</head>
+<link rel="manifest" href="manifest.json">
+<body>
+  <div id="loader" class="centered">
+    <div class="loader"></div>
+  </div>
+
+  <div id="content">
+    <div class="top-row">
+      <h2>Special Dishes</h2>
+      <button id="toggleAllDaysBtn">Show Full Week</button>
+    </div>
+
+    <div class="special-dishes-row" id="specialDishesList"></div>
+
+    <div class="bottom-row">
+      <div class="card main-schedule">
+        <div class="card-header">
+          <h1>Mess Schedule - 62</h1>
+          <p id="mainDateDisplay" style="text-align:center; opacity:0.8;"></p>
+        </div>
+        <div class="meal-container">
+          <div class="meal" id="mainBreakfast">
+            <h3>Breakfast</h3>
+            <p id="mainBreakfastTime"></p>
+            <p id="mainBreakfastDishes"></p>
+          </div>
+          <div class="meal" id="mainLunch">
+            <h3>Lunch</h3>
+            <p id="mainLunchTime"></p>
+            <p id="mainLunchDishes"></p>
+          </div>
+          <div class="meal" id="mainDinner">
+            <h3>Dinner</h3>
+            <p id="mainDinnerTime"></p>
+            <p id="mainDinnerDishes"></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card branch-128">
+        <div class="card-header">
+          <h1>Mess Schedule - 128</h1>
+          <p id="branch128DateDisplay" style="text-align:center; opacity:0.8;"></p>
+        </div>
+        <div id="branch128TodayList"></div>
+      </div>
+    </div>
+
+    <div id="allDaysWrapper">
+      <h2 class="all-days-title">Full Week Schedule</h2>
+      <div class="all-days-stack" id="allDaysStack"></div>
+    </div>
+  </div>
+
+  <button id="scrollTopBtn">↑ Top</button>
+
+  <script>
+    const knownSpecials = [
+      "Paneer Makhani",
+      "Gulab Jamun",
+      "Chowmien",
+      "Veg Manchurian",
+      "Rajma",
+      "Malai Kofta",
+      "Sabji - Poori",
+      "Matar Paneer",
+      "Kashmiri Dum Aloo",
+      "Veg Biryani",
+      "Chole"
+    ];
+
+    let fetchedMenuMain = null;
+    let fetchedMenu128 = null;
+    let extractedSpecialDishes = [];
+
+    const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    const dayNameMap = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    document.addEventListener('mousemove', (e) => {
+      const angle = 45 + ((e.clientX / window.innerWidth) * 30) - 15;
+      document.documentElement.style.setProperty('--angle', angle + 'deg');
+    });
+
+    function formatTime(hours, minutes) {
+      let period = hours >= 12 ? 'PM' : 'AM';
+      let adjusted = hours % 12;
+      adjusted = adjusted ? adjusted : 12;
+      let minStr = minutes < 10 ? '0' + minutes : minutes;
+      return adjusted + ':' + minStr + ' ' + period;
+    }
+
+    function normalizeMealKey(key) {
+      const lower = key.toLowerCase();
+      if (lower === "breakfast") return "Breakfast";
+      if (lower === "lunch") return "Lunch";
+      if (lower === "dinner") return "Dinner";
+      return key;
+    }
+
+    function parseSpecialDishes(menu) {
+      const specialArray = [];
+      for (let dayKey in menu) {
+        if (!menu.hasOwnProperty(dayKey)) continue;
+        const dayData = menu[dayKey];
+
+        for (let mealKey in dayData) {
+          if (!dayData.hasOwnProperty(mealKey)) continue;
+          const normalizedMealKey = normalizeMealKey(mealKey);
+
+          if (["Breakfast", "Lunch", "Dinner"].includes(normalizedMealKey)) {
+            const mealString = dayData[mealKey];
+            if (!mealString) continue;
+
+            knownSpecials.forEach(special => {
+              if (mealString.toLowerCase().includes(special.toLowerCase())) {
+                specialArray.push({
+                  day: dayKey,
+                  meal: normalizedMealKey,
+                  dish: special
+                });
+              }
+            });
+          }
+        }
+      }
+      return specialArray;
+    }
+
+    function displaySpecialDishes() {
+      const specialList = document.getElementById('specialDishesList');
+      specialList.innerHTML = '';
+
+      if (!extractedSpecialDishes || extractedSpecialDishes.length === 0) {
+        const noDishesEl = document.createElement('div');
+        noDishesEl.textContent = "No special dishes detected.";
+        noDishesEl.className = 'special-dish-item';
+        specialList.appendChild(noDishesEl);
+        return;
+      }
+
+      const now = new Date();
+      const currentDayName = dayNameMap[now.getDay()];
+
+      extractedSpecialDishes.forEach(item => {
+        const dishEl = document.createElement('div');
+        dishEl.className = 'special-dish-item';
+        dishEl.textContent = `${item.day} – ${item.meal}: ${item.dish}`;
+
+        if (item.day === currentDayName) {
+          dishEl.style.background = 'rgba(250, 204, 21, 0.3)';
+          dishEl.style.borderLeft = '5px solid #facc15';
+          dishEl.style.paddingLeft = '10px';
+        }
+        specialList.appendChild(dishEl);
+      });
+    }
+
+    function updateScheduleMain() {
+      if (!fetchedMenuMain) return;
+
+      const now = new Date();
+      const dayIndex = now.getDay();
+      const currentDayName = dayNameMap[dayIndex];
+      const dateDisplay = document.getElementById('mainDateDisplay');
+
+      dateDisplay.textContent = now.toLocaleDateString(undefined, {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+
+      let schedule = {};
+      if (dayIndex === 0) {
+        schedule = {
+          Breakfast: { start: 7*60, end: 9*60+30, display: formatTime(7, 0) + " - " + formatTime(9, 30) },
+          Lunch:     { start: 12*60, end: 14*60+30, display: formatTime(12, 0) + " - " + formatTime(14, 30) },
+          Dinner:    { start: 19*60+30, end: 21*60+30, display: formatTime(19, 30) + " - " + formatTime(21, 30) }
+        };
+      } else {
+        schedule = {
+          Breakfast: { start: 7*60, end: 9*60, display: formatTime(7, 0) + " - " + formatTime(9, 0) },
+          Lunch:     { start: 12*60, end: 14*60, display: formatTime(12, 0) + " - " + formatTime(14, 0) },
+          Dinner:    { start: 19*60+30, end: 21*60+30, display: formatTime(19, 30) + " - " + formatTime(21, 30) }
+        };
+      }
+
+      const todayData = fetchedMenuMain[currentDayName];
+      if (!todayData) {
+        document.getElementById('mainBreakfastTime').textContent = schedule.Breakfast.display;
+        document.getElementById('mainLunchTime').textContent     = schedule.Lunch.display;
+        document.getElementById('mainDinnerTime').textContent    = schedule.Dinner.display;
+
+        document.getElementById('mainBreakfastDishes').textContent = "No data available";
+        document.getElementById('mainLunchDishes').textContent     = "No data available";
+        document.getElementById('mainDinnerDishes').textContent    = "No data available";
+      } else {
+        let dayMeals = { Breakfast: "", Lunch: "", Dinner: "" };
+
+        for (let mealKey in todayData) {
+          const normKey = normalizeMealKey(mealKey);
+          if (["Breakfast", "Lunch", "Dinner"].includes(normKey)) {
+            dayMeals[normKey] = todayData[mealKey];
+          }
+        }
+
+        document.getElementById('mainBreakfastTime').textContent = schedule.Breakfast.display;
+        document.getElementById('mainLunchTime').textContent     = schedule.Lunch.display;
+        document.getElementById('mainDinnerTime').textContent    = schedule.Dinner.display;
+
+        document.getElementById('mainBreakfastDishes').textContent = dayMeals["Breakfast"] || "No data available";
+        document.getElementById('mainLunchDishes').textContent     = dayMeals["Lunch"]     || "No data available";
+        document.getElementById('mainDinnerDishes').textContent    = dayMeals["Dinner"]    || "No data available";
+      }
+
+      const currentMinutes = now.getHours() * 60 + now.getMinutes();
+      ['mainBreakfast','mainLunch','mainDinner'].forEach(id => {
+        document.getElementById(id).classList.remove('active');
+      });
+
+      for (let mealName in schedule) {
+        const id = 'main' + mealName;
+        if (currentMinutes >= schedule[mealName].start && currentMinutes < schedule[mealName].end) {
+          document.getElementById(id).classList.add('active');
+        }
+      }
+    }
+
+    function updateSchedule128() {
+      if (!fetchedMenu128) return;
+
+      const now = new Date();
+      const dayIndex = now.getDay();
+      const currentDayName = dayNameMap[dayIndex];
+      const dateDisplay = document.getElementById('branch128DateDisplay');
+      const todayList = document.getElementById('branch128TodayList');
+
+      dateDisplay.textContent = now.toLocaleDateString(undefined, {
+        weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+      });
+
+      todayList.innerHTML = '';
+
+      const dayData = fetchedMenu128[currentDayName];
+      if (!dayData) {
+        const noDataEl = document.createElement('div');
+        noDataEl.className = 'dish-item';
+        noDataEl.textContent = "No data available";
+        todayList.appendChild(noDataEl);
+        return;
+      }
+
+      if (dayData.all) {
+        const allEl = document.createElement('div');
+        allEl.className = 'dish-item';
+        allEl.textContent = dayData.all;
+        todayList.appendChild(allEl);
+        return;
+      }
+
+      const keys = Object.keys(dayData).sort();
+      if (keys.length === 0) {
+        const emptyEl = document.createElement('div');
+        emptyEl.className = 'dish-item';
+        emptyEl.textContent = "No data available";
+        todayList.appendChild(emptyEl);
+        return;
+      }
+
+      keys.forEach(k => {
+        const dishEl = document.createElement('div');
+        dishEl.className = 'dish-item';
+        dishEl.textContent = dayData[k];
+        todayList.appendChild(dishEl);
+      });
+    }
+
+    function displayAllDaysBothCampuses() {
+      if (!fetchedMenuMain || !fetchedMenu128) return;
+
+      const allDaysStack = document.getElementById('allDaysStack');
+      allDaysStack.innerHTML = '';
+
+      const now = new Date();
+      const currentDayName = dayNameMap[now.getDay()];
+
+      dayOrder.forEach(day => {
+        const dayCard = document.createElement('div');
+        dayCard.className = 'day-card';
+
+        const dayTitle = document.createElement('h3');
+        dayTitle.textContent = (day === currentDayName) ? `${day} (Today)` : day;
+        dayCard.appendChild(dayTitle);
+
+        const subcardsDay = document.createElement('div');
+        subcardsDay.className = 'subcards-day';
+
+        const mainSubcard = document.createElement('div');
+        mainSubcard.className = 'subcard-day';
+        const mainHeading = document.createElement('h4');
+        mainHeading.textContent = 'Main Campus';
+        mainSubcard.appendChild(mainHeading);
+
+        const mainData = fetchedMenuMain[day];
+        if (!mainData) {
+          const noData = document.createElement('p');
+          noData.className = 'no-data';
+          noData.textContent = "No data available";
+          mainSubcard.appendChild(noData);
+        } else {
+          const meals = { Breakfast: '', Lunch: '', Dinner: '' };
+          for (let mk in mainData) {
+            const nk = normalizeMealKey(mk);
+            if (['Breakfast','Lunch','Dinner'].includes(nk)) {
+              meals[nk] = mainData[mk];
+            }
+          }
+          function appendMealLine(label, mealString) {
+            const line = document.createElement('p');
+            line.innerHTML = `<span class="mealType">${label}</span>: ${mealString || 'No data available'}`;
+            mainSubcard.appendChild(line);
+          }
+          appendMealLine('Breakfast', meals.Breakfast);
+          appendMealLine('Lunch', meals.Lunch);
+          appendMealLine('Dinner', meals.Dinner);
+        }
+        subcardsDay.appendChild(mainSubcard);
+
+        const branchSubcard = document.createElement('div');
+        branchSubcard.className = 'subcard-day';
+        const branchHeading = document.createElement('h4');
+        branchHeading.textContent = '128 Campus';
+        branchSubcard.appendChild(branchHeading);
+
+        const dayData128 = fetchedMenu128[day];
+        if (!dayData128) {
+          const noData = document.createElement('p');
+          noData.className = 'no-data';
+          noData.textContent = "No data available";
+          branchSubcard.appendChild(noData);
+        } else {
+          if (dayData128.all) {
+            const allP = document.createElement('p');
+            allP.innerHTML = `<span class="mealType">All</span>: ${dayData128.all}`;
+            branchSubcard.appendChild(allP);
+          } else {
+            const keys = Object.keys(dayData128).sort();
+            if (keys.length === 0) {
+              const noData = document.createElement('p');
+              noData.className = 'no-data';
+              noData.textContent = "No data available";
+              branchSubcard.appendChild(noData);
+            } else {
+              keys.forEach(k => {
+                const dishP = document.createElement('p');
+                dishP.textContent = dayData128[k];
+                branchSubcard.appendChild(dishP);
+              });
+            }
+          }
+        }
+        subcardsDay.appendChild(branchSubcard);
+
+        dayCard.appendChild(subcardsDay);
+        allDaysStack.appendChild(dayCard);
+      });
+    }
+
+    const scrollTopBtn = document.getElementById('scrollTopBtn');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) {
+        scrollTopBtn.style.display = 'block';
+      } else {
+        scrollTopBtn.style.display = 'none';
+      }
+    });
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const loader = document.getElementById('loader');
+      const contentDiv = document.getElementById('content');
+      const toggleAllDaysBtn = document.getElementById('toggleAllDaysBtn');
+      const allDaysWrapper = document.getElementById('allDaysWrapper');
+
+      fetch('https://raw.githubusercontent.com/life2harsh/mess-schedular/main/mess_menu.json')
+        .then(response => {
+          if (!response.ok) throw new Error("Failed to fetch main schedule");
+          return response.json();
+        })
+        .then(data => {
+          if (!data.menu) {
+            throw new Error("No 'menu' property in main JSON");
+          }
+          fetchedMenuMain = data.menu;
+          extractedSpecialDishes = parseSpecialDishes(fetchedMenuMain);
+        })
+        .catch(err => {
+          console.error("Error fetching main campus data:", err);
+        })
+        .finally(() => {
+          fetch('https://raw.githubusercontent.com/life2harsh/mess-schedular/main/mess_128_menu.json')
+            .then(response => {
+              if (!response.ok) throw new Error("Failed to fetch 128 schedule");
+              return response.json();
+            })
+            .then(data128 => {
+              if (!data128.menu) {
+                throw new Error("No 'menu' property in 128 JSON");
+              }
+              fetchedMenu128 = data128.menu;
+            })
+            .catch(err => {
+              console.error("Error fetching 128 campus data:", err);
+            })
+            .finally(() => {
+              loader.style.display = 'none';
+              contentDiv.style.display = 'block';
+
+              displaySpecialDishes();
+              updateScheduleMain();
+              updateSchedule128();
+              displayAllDaysBothCampuses();
+
+              setInterval(() => {
+                updateScheduleMain();
+                updateSchedule128();
+              }, 60000);
+            });
+        });
+
+      toggleAllDaysBtn.addEventListener('click', () => {
+        if (allDaysWrapper.style.display === 'none' || allDaysWrapper.style.display === '') {
+          allDaysWrapper.style.display = 'block';
+          toggleAllDaysBtn.textContent = 'Hide Full Week';
+          allDaysWrapper.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          allDaysWrapper.style.display = 'none';
+          toggleAllDaysBtn.textContent = 'Show Full Week';
+        }
+      });
+    });
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js')
+          .then((reg) => {
+            console.log('Service Worker registered!', reg);
+          })
+          .catch((err) => {
+            console.log('Service Worker registration failed:', err);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

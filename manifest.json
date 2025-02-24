@@ -1,0 +1,22 @@
+{
+    "name": "Mess Schedular",
+    "short_name": "MessMenu",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#EE7752",
+    "theme_color": "#E73C7E",
+    "description": "View mess schedules for multiple campuses.",
+    "icons": [
+      {
+        "src": "/icon.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/icon.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  
