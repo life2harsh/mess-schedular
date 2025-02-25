@@ -1,6 +1,6 @@
 {
   "menu": {
-    "monday": {
+    "Monday": {
       "1": "ARHAR DAL",
       "2": "KADAHI PANEER",
       "3": "RICE",
@@ -9,7 +9,7 @@
       "8": "SALAD",
       "7": "RICE KHEER"
     },
-    "tuesday": {
+    "Tuesday": {
       "1": "RAJMA",
       "2": "MIX VEG",
       "3": "RICE",
@@ -18,14 +18,34 @@
       "8": "SALAD",
       "7": "SWEET BOONDI"
     },
-    "wednesday": {
-      "name": "MAHA SHIVRATRI"
+    "Wednesday": {
+      "1": "M",
+      "2": "H",
+      "3": "A",
+      "4": "S",
+      "5": "H",
+      "8": "I",
+      "7": "V"
     },
-    "thursday": {
-      "name": "SYNERGY 2025"
+    "Thursday": {
+      "1": "A",
+      "2": "",
+      "3": "",
+      "4": "SYNERGY",
+      "5": "2025",
+      "8": "T",
+      "7": "R"
     },
-    "friday": {},
-    "saturday": {
+    "Friday": {
+      "1": "A",
+      "2": "",
+      "3": "",
+      "4": "I",
+      "5": "",
+      "8": "",
+      "7": ""
+    },
+    "Saturday": {
       "1": "KALA CH",
       "2": "MASOOR SABU",
       "3": "VEG BIRYANI",
