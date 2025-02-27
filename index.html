@@ -15,7 +15,6 @@
     *, *::before, *::after {
       box-sizing: inherit;
     }
-
     body {
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(var(--angle, 45deg), #EE7752, #E73C7E, #23A6D5, #23D5AB);
@@ -32,7 +31,6 @@
       50%  { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
     .centered {
       display: flex; justify-content: center; align-items: center;
       min-height: 100vh;
@@ -47,13 +45,11 @@
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-
     #content {
       display: none;
       width: 100%;
       position: relative;
     }
-
     .top-bar {
       max-width: 1200px;
       margin: 0 auto;
@@ -63,7 +59,7 @@
       align-items: center;
     }
     .top-bar h1 {
-      font-size: clamp(1.4rem, 4vw, 1.8rem);
+      font-size: clamp(1.4rem, 4vw, 1.8rem); 
       margin: 0;
     }
     .top-bar button {
@@ -79,7 +75,6 @@
     .top-bar button:hover {
       background: rgba(255,255,255,0.2);
     }
-
     .mode-buttons {
       max-width: 1200px;
       margin: 0 auto;
@@ -100,7 +95,6 @@
     .mode-buttons button:hover {
       background: rgba(255,255,255,0.2);
     }
-
 .special-dishes-row {
   max-width: 1200px;
   margin: 0 auto 20px auto;
@@ -111,9 +105,8 @@
   box-shadow: 0 4px 15px rgba(0,0,0,0.5);
   animation: cardFadeIn 1s ease-out forwards;
   overflow: hidden;
-  position: relative;
+  position: relative; 
 }
-
 .special-dishes-row h2 {
   font-size: clamp(0.8rem, 2vw, 1rem);
   margin: 0;
@@ -124,32 +117,28 @@
 .special-dishes-row .ticker-wrapper {
   position: relative;
   display: inline-block;
-  width: calc(100% - 100px);
+  width: calc(100% - 100px); 
   overflow: hidden;
-  height: 30px;
+  height: 30px; 
   vertical-align: middle;
 }
-
 .special-dishes-row ul {
   display: inline-flex;
-  gap: 30px;
+  gap: 30px; 
   list-style: none;
   margin: 0; padding: 0;
   position: absolute;
   white-space: nowrap;
   animation: tickerAnimation 30s linear infinite;
 }
-
-
 .ticker-container {
   position: relative;
   display: inline-block;
-  width: calc(100% - 100px);
+  width: calc(100% - 100px); 
   overflow: hidden;
-  height: 30px;
+  height: 30px; 
   vertical-align: middle;
 }
-
 .ticker-content {
   display: flex;
   position: absolute;
@@ -162,13 +151,11 @@
   0% { transform: translateX(0); }
   100% { transform: translateX(-50%); }
 }
-
 .ticker-items {
   display: flex;
   gap: 30px;
   padding-right: 30px;
 }
-
 .ticker-item {
   font-size: clamp(0.7rem, 1.6vw, 0.85rem);
   background: rgba(255,255,255,0.05);
@@ -177,27 +164,24 @@
   white-space: nowrap;
   transition: background 0.3s;
 }
-
 .ticker-item.today-highlight {
   background: rgba(250, 204, 21, 0.3);
   border-left: 3px solid #facc15;
 }
-
 .ticker-item:hover {
   background: rgba(255,255,255,0.15);
 }
-
     .bottom-row {
       max-width: 1200px;
       margin: 0 auto;
       padding: 20px;
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: wrap; 
       gap: 20px;
-      align-items: stretch;
+      align-items: stretch; 
     }
     .bottom-row > .card {
-      flex: 1 1 300px;
+      flex: 1 1 300px; 
       display: flex;
       flex-direction: column;
     }
@@ -220,7 +204,6 @@
     .card:hover {
       transform: scale(1.01);
     }
-
     .card-header h1 {
       font-size: clamp(1.5rem, 5vw, 1.8rem);
       margin-bottom: 10px;
@@ -250,11 +233,11 @@
       background: rgba(255,255,255,0.1);
     }
     .meal h3 {
-      font-size: clamp(1.2rem, 3.5vw, 1.5rem);
+      font-size: clamp(1.2rem, 3.5vw, 1.5rem); 
       margin-bottom: 8px;
     }
     .meal p {
-      font-size: clamp(1rem, 2.5vw, 1.1rem);
+      font-size: clamp(1rem, 2.5vw, 1.1rem); 
       margin: 0 0 8px 0;
     }
     .meal.active {
@@ -262,7 +245,6 @@
       border-left: 5px solid #facc15;
       padding-left: 15px;
     }
-
     .dish-item {
       background: rgba(255,255,255,0.05);
       border-radius: 6px;
@@ -274,7 +256,6 @@
     .dish-item:hover {
       background: rgba(255,255,255,0.1);
     }
-
     #allDaysWrapper {
       display: none;
       max-width: 1200px;
@@ -483,10 +464,8 @@
     let fetchedMenu128 = null;
     let extractedSpecialDishes = [];
     let currentMode = "both";
-
     const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
     const dayNameMap = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-
     function findKeyByDay(jsonObject, dayName) {
       if (!jsonObject) return null;
       const allKeys = Object.keys(jsonObject);
@@ -497,14 +476,12 @@
       const angle = 45 + ((e.clientX / window.innerWidth) * 30) - 15;
       document.documentElement.style.setProperty('--angle', angle + 'deg');
     });
-
     function formatTime(hours, minutes) {
       const period = hours >= 12 ? 'PM' : 'AM';
       const adjusted = (hours % 12) || 12;
       const minStr = minutes < 10 ? '0' + minutes : minutes;
       return adjusted + ':' + minStr + ' ' + period;
     }
-
     function normalizeMealKey(key) {
       const lower = key.toLowerCase();
       if (lower === "breakfast") return "Breakfast";
@@ -512,7 +489,6 @@
       if (lower === "dinner")    return "Dinner";
       return key;
     }
-
     function parseSpecialDishes(menu) {
       const specialArray = [];
       for (let dayKey in menu) {
@@ -544,6 +520,7 @@
   tickerContent.className = 'ticker-content';
   const tickerItems = document.createElement('div');
   tickerItems.className = 'ticker-items';
+  
   if (!extractedSpecialDishes || extractedSpecialDishes.length === 0) {
     const item = document.createElement('div');
     item.className = 'ticker-item';
@@ -572,18 +549,15 @@
   const duration = Math.max(contentWidth / 50, 10);
   tickerContent.style.animationDuration = `${duration}s`;
 }
-  
     function updateScheduleMain() {
       if (!fetchedMenuMain) return;
       const now = new Date();
       const dayIndex = now.getDay();
       const currentDayName = dayNameMap[dayIndex];
       const dateDisplay = document.getElementById('mainDateDisplay');
-
       dateDisplay.textContent = now.toLocaleDateString(undefined, {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
       });
-
       let schedule = {};
       if (dayIndex === 0) {
         schedule = {
@@ -598,8 +572,10 @@
           Dinner:    { start:19*60+30,end:21*60+30, display: formatTime(19,30)+" - "+formatTime(21,30) }
         };
       }
+
       const dayKey = findKeyByDay(fetchedMenuMain, currentDayName);
       const todayData = dayKey ? fetchedMenuMain[dayKey] : null;
+
       if (!todayData) {
         document.getElementById('mainBreakfastTime').textContent = schedule.Breakfast.display;
         document.getElementById('mainLunchTime').textContent     = schedule.Lunch.display;
@@ -725,6 +701,7 @@
         const branchHeading = document.createElement('h4');
         branchHeading.textContent = '128 Campus';
         branchSubcard.appendChild(branchHeading);
+
         const branchDayKey = findKeyByDay(fetchedMenu128, day);
         const dayData128 = branchDayKey ? fetchedMenu128[branchDayKey] : null;
         if (!dayData128) {
@@ -758,6 +735,7 @@
         dayCard.appendChild(subcardsDay);
         allDaysStack.appendChild(dayCard);
       });
+
       updateFullWeekMode();
     }
 
@@ -783,6 +761,7 @@
         mainCampusCard.style.display  = 'none';
         campus128Card.style.display   = 'block';
       } else {
+        // both
         mainCampusCard.style.display  = 'block';
         campus128Card.style.display   = 'block';
       }
@@ -802,14 +781,17 @@
         branchSubcards.forEach(el => el.style.display = 'block');
       }
     }
+
     document.addEventListener("DOMContentLoaded", () => {
       const loader         = document.getElementById('loader');
       const contentDiv     = document.getElementById('content');
       const toggleAllDaysBtn = document.getElementById('toggleAllDaysBtn');
       const allDaysWrapper = document.getElementById('allDaysWrapper');
+
       const mode62Btn   = document.getElementById('mode62Btn');
       const mode128Btn  = document.getElementById('mode128Btn');
       const modeBothBtn = document.getElementById('modeBothBtn');
+
       fetch('https://raw.githubusercontent.com/life2harsh/mess-schedular/main/mess_menu.json')
         .then(response => {
           if (!response.ok) throw new Error("Failed to fetch main schedule");
@@ -850,6 +832,7 @@
               }, 5000);
             });
         });
+
       toggleAllDaysBtn.addEventListener('click', () => {
         if (allDaysWrapper.style.display === 'none' || allDaysWrapper.style.display === '') {
           allDaysWrapper.style.display = 'block';
@@ -860,6 +843,7 @@
           toggleAllDaysBtn.textContent = 'Show Full Week';
         }
       });
+
       mode62Btn.addEventListener('click', () => {
         currentMode = '62';
         updateVisibilityMode();
