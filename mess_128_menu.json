@@ -19,12 +19,12 @@
       "7": "SWEET BOONDI"
     },
     "Wednesday": {
-      "1": "M",
-      "2": "A",
-      "3": "H",
-      "4": "A",
-      "5": "SHIVRATRI"
+      "Day": "MAHA SHIVRATRI"
     },
+    "Thursday": {
+      "Day": "SYNERGY 2025"
+    },
+    "Friday": {},
     "Saturday": {
       "1": "KALA CH",
       "2": "MASOOR SABU",
