@@ -405,7 +405,6 @@
     </div>
 
     <div class="special-dishes-row" id="specialDishesRow">
-      <!-- Will be populated dynamically -->
     </div>
 
     <div class="bottom-row">
@@ -545,8 +544,6 @@
       }
 
       specialDishesRow.appendChild(headerContainer);
-
-      // Create ticker container for all specials not for today
       const tickerContainer = document.createElement('div');
       tickerContainer.className = 'ticker-container';
       const tickerContent = document.createElement('div');
@@ -842,7 +839,6 @@
           console.error("Error fetching main campus data:", err);
         })
         .finally(() => {
-          // Fetch 128 campus schedule
           fetch('https://raw.githubusercontent.com/life2harsh/mess-schedular/main/mess_128_menu.json')
             .then(response => {
               if (!response.ok) throw new Error("Failed to fetch 128 schedule");
@@ -864,8 +860,6 @@
               updateSchedule128();
               displayAllDaysBothCampuses();
               updateVisibilityMode();
-
-              // Periodically update schedules
               setInterval(() => {
                 updateScheduleMain();
                 updateSchedule128();
