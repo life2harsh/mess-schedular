@@ -1,4 +1,4 @@
-const SW_VERSION = 'v17439693785';
+const SW_VERSION = 'v1744605781';
 const CACHE_NAME = `mess-schedule-cache-${SW_VERSION}`;
 const ASSETS_TO_CACHE = [
   './',
