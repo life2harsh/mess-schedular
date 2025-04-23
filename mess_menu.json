@@ -18,7 +18,7 @@
     "Thursday": {
       "breakfast": "Mix Veg Parantha, Dahi, Achar, Bread Jam, Tea, Fruit",
       "lunch": "Dahi Ke Aloo, Rajma, Rice, Roti, Achar, Salad, Jalebi",
-      "dinner": "Bhindi Do Pyaja, Dal Mugiat. Rice, Roti, Achar, Salad, Milk"
+      "dinner": "Bhindi Do Pyaja, Dal Muglai. Rice, Roti, Achar, Salad, Milk"
     },
     "Friday": {
       "breakfast": "Bread Pakoda, Bread, Jam, Tea, Cold Milk, Fruit",
@@ -32,7 +32,7 @@
     },
     "Sunday": {
       "breakfast": "Coleslaw Sandwich, Bread Omelette Jam, Tea, Cold Coffee, Fruit",
-      "lunch": "Spring Onoin, Dal Makhani, Raita, Rice, Roti, Achar, Salad, Besan Ki Burfi",
+      "lunch": "Spring Onion, Dal Makhani, Raita, Rice, Roti, Achar, Salad, Besan Ki Burfi",
       "dinner": "Khoye Matar Makhana, Jeera Aloo, Veg Tahari, Parantha, Achar, Salad, Green Chutney, Milk"
     }
   }
