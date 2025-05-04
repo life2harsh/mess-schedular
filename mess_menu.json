@@ -1,39 +1,39 @@
 {
   "menu": {
-    "Monday": {
-      "Breakfast": "Uttapam - Chutney, Bread Jam, Tea, Cold Milk, Fruit",
-      "Lunch": "Lauki Ki Sabji, Rajma, Rice, Roti, Achar, Salad, Custard",
-      "Dinner": "Veg Chowmien, Manchurian, Fried Rice, Aloo Tamatar, Roti, Achar, Milk"
+    "Monday 05.05.25": {
+      "Breakfast": "Sabji - Parantha, Achar, Bread Jam, Tea, Cold Milk, Fruit",
+      "Lunch": "Beans Aloo, Arhar Dal, Raita, Rice, Roti, Achar, Salad, Besan Ki Burfi",
+      "Dinner": "Kashmiri Dum Aloo, Veg Biryani, Raita, Roti, Achar, Salad, Papad, Green Chutney"
     },
-    "Tuesday": {
-      "Breakfast": "Poha, Veg Sandwich, Bread Jam, Tea, Cold Coffee, Fruit",
-      "Lunch": "White Matar, Kaddu, Raita, Rice, Poori, Achar, Salad, Halwa",
-      "Dinner": "Nutree Ki Sabji, Arhar Dal, Pulao, Roti, Achar, Salad, Green Chutney, Butter Milk"
+    "Tuesday 06.05.25": {
+      "Breakfast": "Mix Veg Sandwich, Bread Jam, Tea, Cold Coffee, Fruit",
+      "Lunch": "Spring Onion, Chana Dal, Raita, Rice, Roti, Achar, Salad, Boondi",
+      "Dinner": "Mix Veg, Urad Sabut Dal, Rice, Roti, Achar, Salad, Milk"
     },
-    "Wednesday": {
-      "Breakfast": "Macaroni, Bread Butter Jam, Tea, Cold Milk, Fruit",
-      "Lunch": "Shimla Mirch Aloo, Chana Dal, Raita, Rice, Roti, Achar, Salad, Boondi Ka Ladoo",
-      "Dinner": "Palak Paneer, Egg Curry, Mix Dal, Rice, Roti, Achar, Salad, Milk"
+    "Wednesday 07.05.25": {
+      "Breakfast": "Poha, Daliya, Bread Jam, Tea, Fruit",
+      "Lunch": "Chole, Lapetwa Aloo, Raita, Pulao, Kachori, Achar, Salad, Halwa",
+      "Dinner": "Palak Paneer, Arhar Dal, Raita, Rice, Roti, Achar, Salad, Milk"
     },
-    "Thursday": {
-      "Breakfast": "Chana - Parantha, Achar, Bread Jam, Tea, Cold Coffee, Fruit",
-      "Lunch": "Aloo Pyaj, Kadhi Pakoda, Rice, Roti, Achar, Salad, Jalebi",
-      "Dinner": "Malai Kofta, Masoor Sabut Dal, Rice, Roti, Achar, Salad, Milk"
-    },
-    "Friday": {
-      "Breakfast": "Aloo Sandwich, Boiled Egg, Bread Jam, Tea, Cold Milk, Fruit",
-      "Lunch": "Parval Aloo, Dal Fry, Rice, Roti, Achar, Salad, Green Chutney, Kheer",
-      "Dinner": "Veg Keema, Rajma, Jeera Rice, Roti, Achar, Salad, Milk"
-    },
-    "Saturday": {
+    "Thursday 08.05.25": {
       "Breakfast": "Stuff Parantha, Dahi, Achar, Bread Jam, Tea, Fruit",
-      "Lunch": "Kadai Veg, Dal Makhani, Raita, Rice, Roti, Achar, Salad, Moong Dal Halwa",
-      "Dinner": "Matar Aloo, Dal Tadka, Rice, Roti, Achar, Salad, Milk"
+      "Lunch": "Dahi Ka Aloo, Rajma, Rice, Roti, Achar, Salad, Gulab Jamun",
+      "Dinner": "Kathal Ka Kofta, Aloo Masala Dry, Matar Pulao, Roti, Achar, Salad, Butter Milk"
     },
-    "Sunday": {
-      "Breakfast": "Matar - Kulcha, Bread Jam, Tea, Cold Coffee, Fruit",
-      "Lunch": "Paneer Makhani, Aloo Masala Dry, Raita, Pulao, Roti, Achar, Salad, Shahi Tukda",
-      "Dinner": "Bhindi Ki Sabji, Chana Dal, Rice, Roti, Achar, Salad, Milk"
+    "Friday 09.05.25": {
+      "Breakfast": "Coleslaw Sandwich, French Toast, Bread Jam, Tea, Cold Milk, Fruit",
+      "Lunch": "Nutree Matar, Masoor Sabut Dal, Rice, Roti, Achar, Salad, Semiya Ki Kheer",
+      "Dinner": "Sambhar - Vada, Chutney, Aloo Tamatar, Lemon Rice, Roti, Achar, Milk"
+    },
+    "Saturday 10.05.25": {
+      "Breakfast": "Namkeen Semiya, Bread Butter Jam, Tea, Cold Milk, Fruit",
+      "Lunch": "Aloo Matar, Arhar Dal, Raita, Rice, Roti, Achar, Salad, Khoye ki Burfi",
+      "Dinner": "Dal Makhani, Veg Tehari, Dahi, Stuff Parantha, Achar, Salad, Green Chutney, Papad"
+    },
+    "Sunday 11.05.25": {
+      "Breakfast": "Chole - Bhature, Achar, Bread Jam, Tea, Cold Milk, Fruit",
+      "Lunch": "Gobhi Masala, Dal Fry, Raita, Rice, Roti, Achar, Salad, Balu Shahi",
+      "Dinner": "Paneer Do Pyaja, Egg Curry, Mix Dal, Rice, Roti, Achar, Salad, Milk"
     }
   }
 }
