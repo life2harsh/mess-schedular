@@ -3,64 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mess Schedular</title>
+  <title>Mess Scheduler</title>
   <link rel="preconnect" href="https://fonts.gstatic.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link href="style.css" rel="stylesheet" />
 </head>
 <body>
-  <div id="loader" class="centered">
-    <div class="loader"></div>
+  
+  <div id="loader" class="loader-screen">
+    <div class="loader-content">
+      <div class="loader-spinner">
+        <div class="loader-ring"></div>
+        <div class="loader-ring spinning"></div>
+      </div>
+      <div class="loader-text">INITIALIZING</div>
+      <div class="loader-title">Mess Schedule</div>
+    </div>
   </div>
-  <div id="content">
-    <div class="top-bar">
-      <h1>Mess Schedular</h1>
-      <button id="toggleAllDaysBtn">Show Full Week</button>
-    </div>
-    <div class="mode-buttons">
-      <button id="mode62Btn">62 Only</button>
-      <button id="mode128Btn">128 Only</button>
-      <button id="modeBothBtn">Both</button>
-    </div>
-    <div class="special-dishes-row" id="specialDishesRow"></div>
-    <div class="bottom-row">
-      <div class="card main-schedule" id="mainCampusCard">
-        <div class="card-header">
-          <h1>Mess Schedule - 62</h1>
-          <p id="mainDateDisplay"></p>
+
+  
+  <header class="header">
+    <div class="header-content">
+      <div class="header-left">
+        <div class="logo">
+          <div class="dot"></div>
+          <span class="logo-text">MESS</span>
         </div>
-        <div class="meal-container">
-          <div class="meal" id="mainBreakfast">
-            <h3>Breakfast</h3>
-            <p id="mainBreakfastTime"></p>
-            <p id="mainBreakfastDishes"></p>
+        <div id="currentTime" class="current-time"></div>
+      </div>
+
+      <div class="header-right">
+        <div class="mode-selector">
+          <button id="modeBothBtn" class="mode-btn active">
+            <span class="mode-symbol">∞</span>Both
+          </button>
+          <button id="mode62Btn" class="mode-btn">
+            <span class="mode-symbol">①</span>62
+          </button>
+          <button id="mode128Btn" class="mode-btn">
+            <span class="mode-symbol">②</span>128
+          </button>
+        </div>
+
+        <button id="toggleWeekBtn" class="week-toggle">Show Week</button>
+      </div>
+    </div>
+  </header>
+
+  
+  <main id="content" class="main-content hidden">
+    
+    <section class="special-dishes">
+      <div class="section-header">
+        <div class="dot"></div>
+        <span class="section-title">Specials</span>
+      </div>
+
+      <div class="specials-container">
+        
+        <div class="todays-specials">
+          <div class="specials-sub-header">
+            <span class="sub-title">Today</span>
           </div>
-          <div class="meal" id="mainLunch">
-            <h3>Lunch</h3>
-            <p id="mainLunchTime"></p>
-            <p id="mainLunchDishes"></p>
+          <div id="todaySpecials" class="today-specials-grid"></div>
+        </div>
+
+        
+        <div class="feature-space">
+          <div class="specials-sub-header">
+            <span class="sub-title">Feature</span>
           </div>
-          <div class="meal" id="mainDinner">
-            <h3>Dinner</h3>
-            <p id="mainDinnerTime"></p>
-            <p id="mainDinnerDishes"></p>
+          <div class="feature-placeholder">
+            <div class="placeholder-content">
+              <div class="placeholder-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                  <circle cx="12" cy="12" r="3"/>
+                  <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+                </svg>
+              </div>
+              <span class="placeholder-text">Space reserved for upcoming feature</span>
+            </div>
           </div>
         </div>
       </div>
-      <div class="card branch-128" id="campus128Card">
-        <div class="card-header">
-          <h1>Mess Schedule - 128</h1>
-          <p id="branch128DateDisplay"></p>
-        </div>
-        <div id="branch128TodayList"></div>
+
+      
+      <div class="ticker-container">
+        <div id="tickerContent" class="ticker-content"></div>
       </div>
+    </section>
+
+    
+    <div class="campus-grid">
+      <section id="campus62" class="campus-section visible">
+        <div class="section-header">
+          <div class="dot"></div>
+          <span class="section-title">Campus 62</span>
+        </div>
+        <div id="meals62" class="meals-grid"></div>
+      </section>
+
+      <section id="campus128" class="campus-section visible">
+        <div class="section-header">
+          <div class="dot"></div>
+          <span class="section-title">Campus 128</span>
+        </div>
+        <div id="meals128" class="meals-grid"></div>
+      </section>
     </div>
-    <div id="allDaysWrapper">
-      <h2 class="all-days-title">Full Week Schedule</h2>
-      <div class="all-days-stack" id="allDaysStack"></div>
-    </div>
-  </div>
-  <button id="scrollTopBtn">↑ Top</button>
- <script src="script.js"></script>
+
+    
+    <section id="weekView" class="week-view">
+      <div class="section-header">
+        <div class="dot"></div>
+        <span class="section-title">Week Overview</span>
+      </div>
+      <div id="weekGrid" class="week-grid"></div>
+    </section>
+  </main>
+
+  
+  <button id="scrollTopBtn" class="scroll-top">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="m18 15-6-6-6 6"/>
+    </svg>
+  </button>
+
+  <script src="script.js"></script>
 </body>
 </html>
