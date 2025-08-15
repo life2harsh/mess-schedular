@@ -1,3 +1,46 @@
 {
-  "menu": {}
+  "menu": {
+    "Monday": {
+      "1": "ARHAR DAL",
+      "2": "MATAR PANEER",
+      "3": "RICE",
+      "4": "CHAPATTI",
+      "5": "ACHAR",
+      "8": "SALAD",
+      "7": "BESON BURFFI"
+    },
+    "Tuesday": {
+      "1": "RAJMAH DAL",
+      "2": "GOBHI ALOO MASALA",
+      "3": "RICE",
+      "4": "CHAPATTI",
+      "5": "ACHAR",
+      "8": "SALAD",
+      "7": "MIX VEG RAITA"
+    },
+    "Wednesday": {
+      "1": "DAL MAKHANI",
+      "2": "MIX VEG..",
+      "3": "RICE",
+      "4": "CHAPATTI",
+      "5": "ACHAR",
+      "8": "SALAD",
+      "7": "GULAB JAMUN"
+    },
+    "Thursday": {
+      "1": "CHHOLE",
+      "2": "BHATURE",
+      "3": "JEERA RICE",
+      "4": "ACHARI ALOO",
+      "5": "ACHAR",
+      "8": "LACCHA ONION",
+      "7": "BUNDI RAITA"
+    },
+    "Friday": {
+      "4": "15th AUGUST"
+    },
+    "Saturday": {
+      "VERTICAL": "KRISHNA JANMASTMI"
+    }
+  }
 }
