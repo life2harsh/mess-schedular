@@ -715,8 +715,6 @@ let fetchedMenuMain = null;
 
       fetchCurrentVotes();
 
-      testNotificationSystem();
-
       setInterval(updateVotingState, 60000);
 
       setInterval(checkForNotifications, 30000);
@@ -775,72 +773,64 @@ let fetchedMenuMain = null;
             console.log('🔐 Notification permission:', Notification.permission);
         }
 
-        if (!('serviceWorker' in navigator)) {
-            console.error('❌ Service Worker not supported');
-            // On mobile, still try basic notifications
-            if (Notification.permission === 'granted') {
-                console.log('📱 Trying basic notification (no service worker)...');
-                try {
-                    new Notification('📱 Basic Test Notification', {
-                        body: 'This is a basic notification test for mobile!',
-                        icon: './icon.png',
-                        tag: 'mobile-test',
-                        requireInteraction: false
-                    });
-                    console.log('✅ Basic notification sent');
-                } catch (error) {
-                    console.error('❌ Basic notification failed:', error);
-                }
-            }
-            return;
-        }
-
-        if (!('PushManager' in window)) {
-            console.error('❌ Push messaging not supported');
-            // Still try basic notifications
-            if (Notification.permission === 'granted') {
-                console.log('📱 Trying basic notification (no push support)...');
-                new Notification('📱 Basic Test Notification', {
-                    body: 'Push notifications not supported, but basic notifications work!',
-                    icon: './icon.png',
-                    tag: 'basic-test'
-                });
-            }
-            return;
-        }
-
-        console.log('✅ All notification requirements met');
-
-        if (Notification.permission === 'granted') {
-            console.log('📤 Sending test notification...');
-            try {
-                const notification = new Notification('🧪 Test Notification', {
-                    body: 'Mess Scheduler notifications are working!',
-                    icon: './icon.png',
-                    tag: 'test-notification',
-                    requireInteraction: false,
-                    silent: false
-                });
-                
-                notification.onclick = () => {
-                    console.log('🖱️ Notification clicked');
-                    notification.close();
-                };
-                
-                // Auto-close after 5 seconds for testing
-                setTimeout(() => {
-                    notification.close();
-                    console.log('🔕 Test notification auto-closed');
-                }, 5000);
-                
-                console.log('✅ Test notification created successfully');
-            } catch (error) {
-                console.error('❌ Test notification failed:', error);
-                alert('❌ Test notification failed: ' + error.message);
-            }
-        } else {
+        if (Notification.permission !== 'granted') {
             console.error('❌ Notification permission not granted:', Notification.permission);
             alert('❌ Notification permission not granted. Permission: ' + Notification.permission);
+            return;
+        }
+
+        // Try service worker registration notification first (required for mobile)
+        if ('serviceWorker' in navigator) {
+            try {
+                console.log('📱 Trying ServiceWorker notification...');
+                const registration = await navigator.serviceWorker.ready;
+                
+                await registration.showNotification('🧪 Mobile Test Notification', {
+                    body: 'This notification was sent using ServiceWorker.showNotification() for mobile compatibility!',
+                    icon: './icon.png',
+                    badge: './icon.png',
+                    tag: 'mobile-sw-test',
+                    requireInteraction: false,
+                    silent: false,
+                    actions: [],
+                    data: { source: 'serviceWorker' }
+                });
+                
+                console.log('✅ ServiceWorker notification sent successfully');
+                return;
+                
+            } catch (error) {
+                console.error('❌ ServiceWorker notification failed:', error);
+                console.log('📱 Falling back to basic notification...');
+            }
+        }
+
+        // Fallback to basic notification (for desktop/older browsers)
+        try {
+            console.log('📤 Trying basic notification...');
+            const notification = new Notification('🧪 Basic Test Notification', {
+                body: 'Fallback notification using basic Notification constructor',
+                icon: './icon.png',
+                tag: 'basic-test',
+                requireInteraction: false,
+                silent: false
+            });
+            
+            notification.onclick = () => {
+                console.log('🖱️ Notification clicked');
+                notification.close();
+            };
+            
+            // Auto-close after 5 seconds for testing
+            setTimeout(() => {
+                notification.close();
+                console.log('🔕 Test notification auto-closed');
+            }, 5000);
+            
+            console.log('✅ Basic notification created successfully');
+        } catch (error) {
+            console.error('❌ All notification methods failed:', error);
+            alert('❌ All notification methods failed: ' + error.message);
         }
     }
 
@@ -1461,7 +1451,6 @@ let fetchedMenuMain = null;
       document.getElementById('closeSettingsBtn').addEventListener('click', closeSettingsModal);
       document.getElementById('settingsModal').querySelector('.modal-overlay').addEventListener('click', closeSettingsModal);
       document.getElementById('enableNotificationsBtn').addEventListener('click', requestNotificationPermission);
-      document.getElementById('testNotificationBtn').addEventListener('click', testNotificationSystem);
     }
 
     async function initializeApp() {
