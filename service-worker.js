@@ -1,5 +1,6 @@
-const CACHE_NAME = '1.0.0';
-const urlsToCache = [
+const SW_VERSION = 'v1755273422';
+const CACHE_NAME = `mess-schedule-cache-${SW_VERSION}`;
+const ASSETS_TO_CACHE = [
   './',
   './index.html',
   './manifest.json',
@@ -11,7 +12,7 @@ self.addEventListener('install', event => {
     caches.open(CACHE_NAME)
       .then(cache => {
         return Promise.allSettled(
-          urlsToCache.map(url => 
+          ASSETS_TO_CACHE.map(url => 
             cache.add(url).catch(err => {
               console.warn(`Failed to cache ${url}:`, err);
               return null;
