@@ -741,40 +741,106 @@ let fetchedMenuMain = null;
     }
 
     async function testNotificationSystem() {
-        console.log('Testing notification system...');
+        console.log('🔔 Testing notification system...');
+        
+        // Mobile-specific debugging
+        console.log('📱 User Agent:', navigator.userAgent);
+        console.log('🌐 Protocol:', window.location.protocol);
+        console.log('🏠 Hostname:', window.location.hostname);
 
         if (!('Notification' in window)) {
-            console.error('This browser does not support notifications');
+            console.error('❌ This browser does not support notifications');
+            alert('❌ Notifications not supported on this device');
             return;
         }
+        
+        console.log('✅ Notification API supported');
 
         if (Notification.permission === 'default') {
-            console.log('Requesting notification permission...');
-            const permission = await Notification.requestPermission();
-            console.log('Notification permission:', permission);
+            console.log('📝 Requesting notification permission...');
+            try {
+                const permission = await Notification.requestPermission();
+                console.log('🔐 Permission result:', permission);
+                
+                if (permission === 'denied') {
+                    alert('❌ Notifications blocked. Please enable in browser settings.');
+                    return;
+                }
+            } catch (error) {
+                console.error('❌ Permission request failed:', error);
+                alert('❌ Failed to request notification permission');
+                return;
+            }
         } else {
-            console.log('Notification permission:', Notification.permission);
+            console.log('🔐 Notification permission:', Notification.permission);
         }
 
         if (!('serviceWorker' in navigator)) {
-            console.error('Service Worker not supported');
+            console.error('❌ Service Worker not supported');
+            // On mobile, still try basic notifications
+            if (Notification.permission === 'granted') {
+                console.log('📱 Trying basic notification (no service worker)...');
+                try {
+                    new Notification('📱 Basic Test Notification', {
+                        body: 'This is a basic notification test for mobile!',
+                        icon: './icon.png',
+                        tag: 'mobile-test',
+                        requireInteraction: false
+                    });
+                    console.log('✅ Basic notification sent');
+                } catch (error) {
+                    console.error('❌ Basic notification failed:', error);
+                }
+            }
             return;
         }
 
         if (!('PushManager' in window)) {
-            console.error('Push messaging not supported');
+            console.error('❌ Push messaging not supported');
+            // Still try basic notifications
+            if (Notification.permission === 'granted') {
+                console.log('📱 Trying basic notification (no push support)...');
+                new Notification('📱 Basic Test Notification', {
+                    body: 'Push notifications not supported, but basic notifications work!',
+                    icon: './icon.png',
+                    tag: 'basic-test'
+                });
+            }
             return;
         }
 
         console.log('✅ All notification requirements met');
 
         if (Notification.permission === 'granted') {
-            console.log('Sending test notification...');
-            new Notification('Test Notification', {
-                body: 'Mess Scheduler notifications are working!',
-                icon: '/icon.png',
-                tag: 'test-notification'
-            });
+            console.log('📤 Sending test notification...');
+            try {
+                const notification = new Notification('🧪 Test Notification', {
+                    body: 'Mess Scheduler notifications are working!',
+                    icon: './icon.png',
+                    tag: 'test-notification',
+                    requireInteraction: false,
+                    silent: false
+                });
+                
+                notification.onclick = () => {
+                    console.log('🖱️ Notification clicked');
+                    notification.close();
+                };
+                
+                // Auto-close after 5 seconds for testing
+                setTimeout(() => {
+                    notification.close();
+                    console.log('🔕 Test notification auto-closed');
+                }, 5000);
+                
+                console.log('✅ Test notification created successfully');
+            } catch (error) {
+                console.error('❌ Test notification failed:', error);
+                alert('❌ Test notification failed: ' + error.message);
+            }
+        } else {
+            console.error('❌ Notification permission not granted:', Notification.permission);
+            alert('❌ Notification permission not granted. Permission: ' + Notification.permission);
         }
     }
 
@@ -1395,6 +1461,7 @@ let fetchedMenuMain = null;
       document.getElementById('closeSettingsBtn').addEventListener('click', closeSettingsModal);
       document.getElementById('settingsModal').querySelector('.modal-overlay').addEventListener('click', closeSettingsModal);
       document.getElementById('enableNotificationsBtn').addEventListener('click', requestNotificationPermission);
+      document.getElementById('testNotificationBtn').addEventListener('click', testNotificationSystem);
     }
 
     async function initializeApp() {
