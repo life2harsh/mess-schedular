@@ -1,4 +1,4 @@
-const SW_VERSION = 'v1755273422';
+const SW_VERSION = 'v1755273434622';
 const CACHE_NAME = `mess-schedule-cache-${SW_VERSION}`;
 const ASSETS_TO_CACHE = [
   './',
@@ -165,4 +165,5 @@ self.addEventListener('message', event => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
+
 });
