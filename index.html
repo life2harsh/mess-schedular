@@ -3,10 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0a0a0a">
+  <meta name="background-color" content="#0a0a0a">
+  <meta name="msapplication-navbutton-color" content="#0a0a0a">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-capable" content="yes">
   <title>Mess Scheduler</title>
   <link rel="preconnect" href="https://fonts.gstatic.com" />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <link href="style.css" rel="stylesheet" />
+  
 </head>
 <body>
   
@@ -21,7 +27,6 @@
     </div>
   </div>
 
-  
   <header class="header">
     <div class="header-content">
       <div class="header-left">
@@ -46,13 +51,20 @@
         </div>
 
         <button id="toggleWeekBtn" class="week-toggle">Show Week</button>
+        
+        
+        <button id="settingsBtn" class="settings-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1 1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.79a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
       </div>
     </div>
   </header>
 
-  
   <main id="content" class="main-content hidden">
-    <!-- Special Dishes Ticker -->
+    
     <section class="ticker-section">
       <div class="ticker-container">
         <div id="tickerContent" class="ticker-content"></div>
@@ -62,39 +74,76 @@
     <section class="special-dishes">
       <div class="section-header">
         <div class="dot"></div>
-        <span class="section-title">Specials</span>
+        <span class="section-title">Today's Special</span>
       </div>
 
       <div class="specials-container">
-        
         <div class="todays-specials">
-          <div class="specials-sub-header">
-            <span class="sub-title">Today</span>
-          </div>
           <div id="todaySpecials" class="today-specials-grid"></div>
         </div>
-
         
-        <div class="feature-space">
+        
+        <div class="community-voting">
           <div class="specials-sub-header">
-            <span class="sub-title">Feature</span>
+            <span class="sub-title">Community Feedback</span>
           </div>
-          <div class="feature-placeholder">
-            <div class="placeholder-content">
-              <div class="placeholder-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-                  <circle cx="12" cy="12" r="3"/>
-                  <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1"/>
+          <div id="votingWidget" class="voting-widget">
+            <div class="voting-question">
+              <h4>Rate Today's Food Quality</h4>
+              <p class="voting-subtitle">Help others decide</p>
+            </div>
+            <div class="voting-buttons">
+              <button id="voteGoodBtn" class="vote-btn vote-good">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M14 9V5a3 3 0 0 0-3-3l-4 9v11h11.28a2 2 0 0 0 2-1.7l1.38-9a2 2 0 0 0-2-2.3zM7 22H4a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h3"/>
                 </svg>
+                Good
+              </button>
+              <button id="voteBadBtn" class="vote-btn vote-bad">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M10 15v4a3 3 0 0 0 3 3l4-9V2H5.72a2 2 0 0 0-2 1.7l-1.38 9a2 2 0 0 0 2 2.3zm7-13h2.67A2.31 2.31 0 0 1 22 4v7a2.31 2.31 0 0 1-2.33 2H17"/>
+                </svg>
+                Bad
+              </button>
+              <button id="voteSkipBtn" class="vote-btn vote-skip">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/>
+                  <polyline points="12,6 12,12 16,14"/>
+                </svg>
+                Skip
+              </button>
+            </div>
+            <div id="votingResults" class="voting-results">
+              <div class="result-item">
+                <span class="result-label">Good</span>
+                <div class="result-bar">
+                  <div class="result-fill good" id="goodFill"></div>
+                </div>
+                <span class="result-count" id="goodCount">0</span>
               </div>
-              <span class="placeholder-text">Space reserved for upcoming feature</span>
+              <div class="result-item">
+                <span class="result-label">Bad</span>
+                <div class="result-bar">
+                  <div class="result-fill bad" id="badFill"></div>
+                </div>
+                <span class="result-count" id="badCount">0</span>
+              </div>
+              <div class="result-item">
+                <span class="result-label">Skip</span>
+                <div class="result-bar">
+                  <div class="result-fill skip" id="skipFill"></div>
+                </div>
+                <span class="result-count" id="skipCount">0</span>
+              </div>
+            </div>
+            <div id="votingStatus" class="voting-status hidden">
+              <p class="vote-submitted">✓ Thank you for your feedback!</p>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    
     <div class="campus-grid">
       <section id="campus62" class="campus-section visible">
         <div class="section-header">
@@ -113,7 +162,6 @@
       </section>
     </div>
 
-    
     <section id="weekView" class="week-view">
       <div class="section-header">
         <div class="dot"></div>
@@ -121,14 +169,63 @@
       </div>
       <div id="weekGrid" class="week-grid"></div>
     </section>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <span class="footer-text">Made with 🍜 by </span>
+        <a href="https://github.com/life2harsh/mess-schedular" target="_blank" class="footer-link">life2harsh</a>
+      </div>
+    </footer>
   </main>
 
-  
   <button id="scrollTopBtn" class="scroll-top">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="m18 15-6-6-6 6"/>
     </svg>
   </button>
+
+  
+  <div id="settingsModal" class="modal hidden">
+    <div class="modal-overlay" onclick="closeSettingsModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">Settings</h2>
+        <button id="closeSettingsBtn" class="modal-close">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-title">Notifications</div>
+            <div class="setting-description">Get notified when voting opens and see results updates</div>
+          </div>
+          <div class="setting-control">
+            <button id="enableNotificationsBtn" class="notification-permission-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+              </svg>
+              <span id="notificationBtnText">Enable Notifications</span>
+            </button>
+          </div>
+        </div>
+        
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-title">Notification Status</div>
+            <div class="setting-description">Current permission state</div>
+          </div>
+          <div class="setting-control">
+            <span id="notificationStatus" class="notification-status">Checking...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>
