@@ -1,4 +1,4 @@
-const SW_VERSION = 'v1755273434622';
+const SW_VERSION = 'v17552734396395821425634622';
 const CACHE_NAME = `mess-schedule-cache-${SW_VERSION}`;
 const ASSETS_TO_CACHE = [
   './',
@@ -167,3 +167,4 @@ self.addEventListener('message', event => {
   }
 
 });
+
