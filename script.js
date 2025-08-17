@@ -635,8 +635,8 @@ let fetchedMenuMain = null;
         };
 
         const [mainResponse, branch128Response] = await Promise.all([
-          fetchWithTimeout('https://raw.githubusercontent.com/life2harsh/mess-schedular/main/mess_menu.json'),
-          fetchWithTimeout('https://raw.githubusercontent.com/life2harsh/mess-schedular/main/mess_128_menu.json')
+          fetchWithTimeout('https://raw.githubusercontent.com/life2harsh2/data/main/mess_menu.json'),
+          fetchWithTimeout('https://raw.githubusercontent.com/life2harsh2/data/main/mess_128_menu.json')
         ]);
 
         if (!mainResponse.ok) throw new Error("Failed to fetch main schedule");
