@@ -1,1 +1,46 @@
-.
+{
+  "menu": {
+    "01.12.25": {
+      "day": "Monday",
+      "breakfast": "Methi Ka Thepla, Aloo Ki Sabji, Bread Jam, Tea, Milk, Fruit",
+      "lunch": "Mix Veg, Masoor Sabut Dal, Raita, Rice, Roti, Achar, Salad, Jalebi",
+      "dinner": "Spring Onion, Rajma, Rice, Roti, Achar, Salad, Milk"
+    },
+    "02.12.25": {
+      "day": "Tuesday",
+      "breakfast": "Namkeen Semiya, Bread Butter Jam, Tea, Milk, Fruit",
+      "lunch": "Sarso Ka Saag, Arhar Dal, Raita, Rice, Roti, Achar, Salad, Besan Ki Burfi",
+      "dinner": "Malai Kofta, Moong Dal, Veg Fried Rice, Roti, Achar, Salad, Green Chutney, Milk"
+    },
+    "03.12.25": {
+      "day": "Wednesday",
+      "breakfast": "Stuff Parantha, Dahi, Achar, Bread Jam, Tea, Fruit",
+      "lunch": "Cabbage Matar, Urad Sabut Dal, Rice, Roti, Achar, Salad, Kheer",
+      "dinner": "Paneer Masala, Egg Curry, Masoor Dal, Rice, Roti, Achar, Salad, Milk"
+    },
+    "04.12.25": {
+      "day": "Thursday",
+      "breakfast": "Aloo Sandwich, Bread Jam, Tea, Milk, Fruit",
+      "lunch": "Gobhi Aloo, Dal Amritsari, Raita, Rice, Roti, Achar, Salad, Boondi Ka Ladoo",
+      "dinner": "Sambhar - Vada, Coconut Chutney, Jeera Aloo, Lemon Rice, Roti, Achar, Milk"
+    },
+    "05.12.25": {
+      "day": "Friday",
+      "breakfast": "Poha, Daliya, Bread Jam, Tea, Milk, Fruit",
+      "lunch": "Chole, Dahi - Bhalla, Veg Pulao, Kachori, Achar, Salad, Halwa",
+      "dinner": "Gatta Curry, Dal Fry, Jeera Rice, Roti, Achar, Salad, Milk"
+    },
+    "06.12.25": {
+      "day": "Saturday",
+      "breakfast": "Bread Pakoda, Bread Butter Jam, Tea, Milk, Chutney, Fruit",
+      "lunch": "Veg Kofta, Urad Dhuli Dal, Rice, Roti, Achar, Salad, Custard",
+      "dinner": "Chilli Paneer, Fried Rice, Nutree Aloo, Parantha, Achar, Milk"
+    },
+    "07.12.25": {
+      "day": "Sunday",
+      "breakfast": "Veg Sandwich, Bread Omelette, Achar, Bread Jam, Tea, Milk, Fruit",
+      "lunch": "Kashmiri Dum Aloo, Veg Tahari Raita, Roti, Achar, Salad, Papad Green Chutney, Balu Shahi",
+      "dinner": "Beans Aloo, Chana Dal, Rice, Roti, Achar, Salad, Milk"
+    }
+  }
+}
