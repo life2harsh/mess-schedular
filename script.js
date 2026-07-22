@@ -244,11 +244,6 @@ function weekDate(index) {
   return d;
 }
 
-function tomorrowDate() {
-  const d = new Date();
-  d.setDate(d.getDate() + 1);
-  return d;
-}
 
 function renderHeaderDate() {
   const now = new Date();
@@ -290,18 +285,27 @@ function dishPills(mealString) {
   return wrap;
 }
 
-function heroCard({ meal, entry, live, label, time }) {
-  const card = document.createElement("article");
-  card.className = "hero-card rise" + (live ? "" : " idle");
+function fmtDur(mins) {
+  const h = Math.floor(mins / 60);
+  return `${h ? h + "h " : ""}${mins % 60}m`;
+}
 
-  const nowLine = document.createElement("div");
-  nowLine.className = "now-line" + (live ? "" : " upcoming");
-  if (live) {
-    const dot = document.createElement("span");
-    dot.className = "now-dot";
-    nowLine.appendChild(dot);
+/* one uniform, fully-expanded card per meal; the nearest one glows */
+function mealCard({ meal, entry, time, live, past, label }) {
+  const card = document.createElement("article");
+  card.className = "meal-card rise" + (live ? " live" : "") + (past ? " past" : "");
+
+  if (label) {
+    const nowLine = document.createElement("div");
+    nowLine.className = "now-line" + (live ? "" : " upcoming");
+    if (live) {
+      const dot = document.createElement("span");
+      dot.className = "now-dot";
+      nowLine.appendChild(dot);
+    }
+    nowLine.appendChild(document.createTextNode(label));
+    card.appendChild(nowLine);
   }
-  nowLine.appendChild(document.createTextNode(label));
 
   const name = document.createElement("h2");
   name.className = "meal-name";
@@ -311,28 +315,10 @@ function heroCard({ meal, entry, live, label, time }) {
   timeEl.className = "meal-time";
   timeEl.textContent = time;
 
-  card.append(nowLine, name, timeEl, dishPills(entry[meal]));
+  card.append(name, timeEl, dishPills(entry[meal]));
 
   if (live) mountRating(card, meal); // async; appends when/if the API answers
   return card;
-}
-
-function nextCard({ meal, entry, time, dayLabel }) {
-  const row = document.createElement("article");
-  row.className = "next-card rise";
-  const title = dayLabel
-    ? `${meal[0].toUpperCase() + meal.slice(1)} · ${dayLabel}`
-    : meal[0].toUpperCase() + meal.slice(1);
-  row.innerHTML = `
-    <div class="info">
-      <div class="title"></div>
-      <div class="desc"></div>
-    </div>
-    <span class="when"></span>`;
-  row.querySelector(".title").textContent = title;
-  row.querySelector(".desc").textContent = splitDishes(entry[meal]).join(", ");
-  row.querySelector(".when").textContent = time;
-  return row;
 }
 
 function emptyCard(title, sub) {
@@ -344,57 +330,9 @@ function emptyCard(title, sub) {
   return card;
 }
 
-/* pick the hero for today: live meal, else next meal today, else tomorrow's breakfast */
-function todayHero(entry, tomorrowEntry) {
-  const sched = scheduleFor(new Date());
-  const mins = minutesNow();
-
-  for (const meal of MEALS) {
-    const w = sched[meal];
-    if (mins >= w.start && mins < w.end && entry[meal]) {
-      const left = w.end - mins;
-      return {
-        hero: {
-          meal, entry, live: true, time: w.display,
-          label: `Serving now · ${Math.floor(left / 60) ? Math.floor(left / 60) + "h " : ""}${left % 60}m left`,
-        },
-        after: MEALS.slice(MEALS.indexOf(meal) + 1),
-      };
-    }
-  }
-  for (const meal of MEALS) {
-    const w = sched[meal];
-    if (mins < w.start && entry[meal]) {
-      const until = w.start - mins;
-      return {
-        hero: {
-          meal, entry, live: false, time: w.display,
-          label: `Up next · in ${Math.floor(until / 60) ? Math.floor(until / 60) + "h " : ""}${until % 60}m`,
-        },
-        after: MEALS.slice(MEALS.indexOf(meal) + 1),
-      };
-    }
-  }
-  if (tomorrowEntry && tomorrowEntry.breakfast) {
-    const w = scheduleFor(tomorrowDate()).breakfast;
-    return {
-      hero: {
-        meal: "breakfast", entry: tomorrowEntry, live: false,
-        time: w.display, label: "Up next · tomorrow",
-      },
-      after: ["lunch", "dinner"].filter((m) => tomorrowEntry[m]),
-      afterEntry: tomorrowEntry,
-      afterLabel: "tomorrow",
-    };
-  }
-  return null;
-}
-
 function renderMenu() {
-  const hero = $("hero");
-  const upcoming = $("upcoming");
-  hero.innerHTML = "";
-  upcoming.innerHTML = "";
+  const container = $("hero");
+  container.innerHTML = "";
 
   const menu = state.menus[state.campus];
   const date = weekDate(state.selectedDay);
@@ -402,7 +340,7 @@ function renderMenu() {
   $("stale").classList.toggle("hidden", !stale);
 
   if (!menu) {
-    hero.appendChild(emptyCard(
+    container.appendChild(emptyCard(
       "Couldn’t load the menu",
       "Check your connection and pull to refresh — the last saved menu appears automatically when available."
     ));
@@ -410,7 +348,7 @@ function renderMenu() {
   }
 
   if (!entry) {
-    hero.appendChild(emptyCard(
+    container.appendChild(emptyCard(
       state.campus === "128" ? "Campus 128 menu isn’t posted yet" : "No menu for this day yet",
       "It shows up here as soon as the weekly menu is published."
     ));
@@ -418,43 +356,39 @@ function renderMenu() {
   }
 
   const sched = scheduleFor(date);
+  const isToday = state.selectedDay === todayIndex();
+  const mins = minutesNow();
 
-  if (state.selectedDay === todayIndex()) {
-    const tomorrow = entryFor(menu, tomorrowDate()).entry;
-    const pick = todayHero(entry, tomorrow);
-    if (pick) {
-      hero.appendChild(heroCard(pick.hero));
-      const src = pick.afterEntry || entry;
-      const lbl = pick.afterLabel || null;
-      pick.after.forEach((meal, i) => {
-        if (!src[meal]) return;
-        const card = nextCard({
-          meal, entry: src, dayLabel: lbl,
-          time: scheduleFor(pick.afterEntry ? tomorrowDate() : date)[meal].display,
-        });
-        card.style.animationDelay = `${(i + 1) * 40}ms`;
-        upcoming.appendChild(card);
-      });
-      return;
+  /* nearest = the first meal whose window hasn't ended yet */
+  let nearest = null;
+  if (isToday) {
+    for (const meal of MEALS) {
+      if (entry[meal] && mins < sched[meal].end) { nearest = meal; break; }
     }
   }
 
-  /* non-today day (or no hero pick): show all three meals, breakfast leading */
-  let first = true;
-  MEALS.forEach((meal, i) => {
-    if (!entry[meal]) return;
-    if (first) {
-      hero.appendChild(heroCard({
-        meal, entry, live: false, time: sched[meal].display,
-        label: DAY_NAMES[date.getDay()],
-      }));
-      first = false;
-    } else {
-      const card = nextCard({ meal, entry, time: sched[meal].display });
-      card.style.animationDelay = `${i * 40}ms`;
-      upcoming.appendChild(card);
+  let i = 0;
+  for (const meal of MEALS) {
+    if (!entry[meal]) continue;
+    const w = sched[meal];
+    let live = false, past = false, label = "";
+    if (isToday) {
+      if (meal === nearest) {
+        live = true;
+        label = mins >= w.start
+          ? `Serving now · ${fmtDur(w.end - mins)} left`
+          : `Up next · in ${fmtDur(w.start - mins)}`;
+      } else if (mins >= w.end) {
+        past = true;
+        label = "Served";
+      } else {
+        label = "Later today";
+      }
     }
-  });
+    const card = mealCard({ meal, entry, time: w.display, live, past, label });
+    card.style.animationDelay = `${i++ * 40}ms`;
+    container.appendChild(card);
+  }
 }
 
 /* ————— campus toggle ————— */
@@ -476,9 +410,8 @@ function bindCampusToggle() {
 /* ————— boot ————— */
 
 function showSkeleton() {
-  $("hero").innerHTML = `<div class="skeleton hero-size"></div>`;
-  $("upcoming").innerHTML =
-    `<div class="skeleton row-size"></div><div class="skeleton row-size"></div>`;
+  $("hero").innerHTML =
+    `<div class="skeleton hero-size"></div>`.repeat(3);
 }
 
 async function boot() {

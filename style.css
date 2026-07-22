@@ -149,17 +149,28 @@ button {
 /* ————— cards ————— */
 .content { flex: 1; }
 
-.hero-card {
+.meal-card {
   position: relative;
   overflow: hidden;
   background: var(--card);
-  border: 1px solid var(--accent-line);
+  border: 1px solid var(--line);
   border-radius: var(--r-card);
   padding: 20px 20px 16px;
   margin-bottom: 10px;
 }
 
-.hero-card::before {
+.meal-card > * { position: relative; }
+
+/* the nearest meal glows */
+.meal-card.live {
+  border-color: var(--accent);
+  box-shadow:
+    0 0 0 1px rgba(110, 203, 245, 0.35),
+    0 0 26px rgba(110, 203, 245, 0.22);
+  animation: breathe 3.2s ease-in-out infinite;
+}
+
+.meal-card.live::before {
   content: "";
   position: absolute;
   inset: -40% -20% auto;
@@ -168,10 +179,21 @@ button {
   pointer-events: none;
 }
 
-.hero-card > * { position: relative; }
+@keyframes breathe {
+  0%, 100% {
+    box-shadow:
+      0 0 0 1px rgba(110, 203, 245, 0.35),
+      0 0 18px rgba(110, 203, 245, 0.16);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(110, 203, 245, 0.5),
+      0 0 32px rgba(110, 203, 245, 0.3);
+  }
+}
 
-.hero-card.idle { border-color: var(--line); }
-.hero-card.idle::before { display: none; }
+/* meals already served today recede */
+.meal-card.past { opacity: 0.55; }
 
 .now-line {
   display: flex;
@@ -266,42 +288,6 @@ button {
   font-variant-numeric: tabular-nums;
 }
 
-/* upcoming meal rows */
-.next-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: var(--r-inner);
-  padding: 14px 16px;
-  margin-bottom: 8px;
-}
-
-.next-card .info { min-width: 0; }
-
-.next-card .title {
-  font-size: 0.86rem;
-  font-weight: 700;
-}
-
-.next-card .desc {
-  margin-top: 2px;
-  font-size: 0.74rem;
-  color: var(--muted);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.next-card .when {
-  margin-left: auto;
-  flex-shrink: 0;
-  font-size: 0.72rem;
-  color: var(--faint);
-  font-variant-numeric: tabular-nums;
-}
-
 /* empty / error states */
 .empty-card {
   background: var(--card);
@@ -332,8 +318,7 @@ button {
   to { background-position: -200% 0; }
 }
 
-.skeleton.hero-size { height: 190px; margin-bottom: 10px; }
-.skeleton.row-size { height: 64px; border-radius: var(--r-inner); margin-bottom: 8px; }
+.skeleton.hero-size { height: 170px; margin-bottom: 10px; }
 
 /* load-in */
 .rise {
@@ -369,7 +354,7 @@ button {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .now-dot, .skeleton { animation: none; }
+  .now-dot, .skeleton, .meal-card.live { animation: none; }
   .rise { animation: none; }
   * { transition: none !important; }
 }
