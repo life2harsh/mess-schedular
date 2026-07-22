@@ -291,9 +291,9 @@ function fmtDur(mins) {
 }
 
 /* one uniform, fully-expanded card per meal; the nearest one glows */
-function mealCard({ meal, entry, time, live, past, label }) {
+function mealCard({ meal, entry, time, live, label }) {
   const card = document.createElement("article");
-  card.className = "meal-card rise" + (live ? " live" : "") + (past ? " past" : "");
+  card.className = "meal-card rise" + (live ? " live" : "");
 
   if (label) {
     const nowLine = document.createElement("div");
@@ -371,23 +371,29 @@ function renderMenu() {
   for (const meal of MEALS) {
     if (!entry[meal]) continue;
     const w = sched[meal];
-    let live = false, past = false, label = "";
+    if (isToday && mins >= w.end) continue; // finished meals drop off the page
+    let live = false, label = "";
     if (isToday) {
       if (meal === nearest) {
         live = true;
         label = mins >= w.start
           ? `Serving now · ${fmtDur(w.end - mins)} left`
           : `Up next · in ${fmtDur(w.start - mins)}`;
-      } else if (mins >= w.end) {
-        past = true;
-        label = "Served";
       } else {
         label = "Later today";
       }
     }
-    const card = mealCard({ meal, entry, time: w.display, live, past, label });
+    const card = mealCard({ meal, entry, time: w.display, live, label });
     card.style.animationDelay = `${i++ * 40}ms`;
     container.appendChild(card);
+  }
+
+  /* after dinner everything has dropped off — say so instead of a blank page */
+  if (isToday && !container.children.length) {
+    container.appendChild(emptyCard(
+      "All meals served for today",
+      "Tomorrow’s menu is one tap away on the day strip above."
+    ));
   }
 }
 

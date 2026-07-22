@@ -192,9 +192,6 @@ button {
   }
 }
 
-/* meals already served today recede */
-.meal-card.past { opacity: 0.55; }
-
 .now-line {
   display: flex;
   align-items: center;
