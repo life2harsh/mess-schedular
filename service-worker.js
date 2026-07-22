@@ -1,175 +1,64 @@
-const SW_VERSION = 'v1784638309';
-const CACHE_NAME = `mess-schedule-cache-${SW_VERSION}`;
-const ASSETS_TO_CACHE = [
-  './',
-  './index.html',
-  './manifest.json',
-  './service-worker.js',
+const SW_VERSION = "v2-revamp-1";
+const CACHE_NAME = `mess-scheduler-${SW_VERSION}`;
+
+const APP_SHELL = [
+  "./",
+  "./index.html",
+  "./style.css",
+  "./script.js",
+  "./manifest.json",
+  "./icon.png",
 ];
 
-self.addEventListener('install', event => {
+self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => {
-        return Promise.allSettled(
-          ASSETS_TO_CACHE.map(url => 
-            cache.add(url).catch(err => {
-              console.warn(`Failed to cache ${url}:`, err);
-              return null;
-            })
-          )
-        );
-      })
-      .then(results => {
-        const successful = results.filter(result => result.status === 'fulfilled').length;
-        const failed = results.filter(result => result.status === 'rejected').length;
-      })
-      .catch(err => {
-        console.error('Cache failed:', err);
-      })
+      .then((cache) => Promise.allSettled(APP_SHELL.map((url) => cache.add(url))))
+      .then(() => self.skipWaiting())
   );
-  
-  self.skipWaiting();
 });
 
-self.addEventListener('activate', event => {
+self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            return caches.delete(cacheName);
-          }
-        })
-      );
-    }).then(() => {
-      return self.clients.claim();
-    })
+    caches.keys()
+      .then((keys) => Promise.all(
+        keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k))
+      ))
+      .then(() => self.clients.claim())
   );
 });
 
-self.addEventListener('fetch', event => {
-  if (event.request.method !== 'GET') return;
-  
+self.addEventListener("fetch", (event) => {
   const url = new URL(event.request.url);
-  if (url.origin !== location.origin) return;
 
+  /* never cache the voting API */
+  if (url.pathname.startsWith("/api/")) return;
+
+  /* menu data: network first, fall back to cache (script.js also keeps a
+     localStorage copy, this is belt-and-braces for full offline loads) */
+  if (url.hostname === "raw.githubusercontent.com") {
+    event.respondWith(
+      fetch(event.request)
+        .then((res) => {
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then((c) => c.put(event.request, copy));
+          return res;
+        })
+        .catch(() => caches.match(event.request))
+    );
+    return;
+  }
+
+  /* app shell: network first so deploys land immediately, cache for offline */
   event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
+    fetch(event.request)
+      .then((res) => {
+        if (res.ok && event.request.method === "GET") {
+          const copy = res.clone();
+          caches.open(CACHE_NAME).then((c) => c.put(event.request, copy));
         }
-
-        return fetch(event.request)
-          .then(response => {
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            const responseToCache = response.clone();
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          });
+        return res;
       })
-      .catch(() => {
-        if (event.request.destination === 'document') {
-          return caches.match('./index.html');
-        }
-      })
+      .catch(() => caches.match(event.request))
   );
 });
-
-self.addEventListener('push', event => {
-  let pushData = {};
-  
-  if (event.data) {
-    try {
-      pushData = event.data.json();
-    } catch (e) {
-      pushData = {
-        title: 'Mess Notification',
-        body: event.data.text() || 'You have a new notification!',
-        actions: []
-      };
-    }
-  } else {
-    pushData = {
-      title: 'Mess Notification',
-      body: 'You have a new notification!',
-      actions: []
-    };
-  }
-
-  const options = {
-    body: pushData.body || 'New notification',
-    icon: './icon.png',
-    badge: './icon.png',
-    tag: pushData.tag || 'default',
-    requireInteraction: pushData.requireInteraction || false,
-    silent: pushData.silent || false,
-    actions: pushData.actions || [],
-    data: pushData.data || {}
-  };
-
-  event.waitUntil(
-    self.registration.showNotification(pushData.title || 'Mess Notification', options)
-  );
-});
-
-self.addEventListener('notificationclick', event => {
-  event.notification.close();
-
-  const action = event.action;
-  const data = event.notification.data || {};
-
-  if (action === 'vote-good' || action === 'vote-bad' || action === 'vote-skip') {
-    const voteType = action.replace('vote-', '');
-    
-    event.waitUntil(
-      clients.matchAll({ type: 'window', includeUncontrolled: true })
-        .then(clientList => {
-          if (clientList.length > 0) {
-            const client = clientList[0];
-            client.postMessage({
-              type: 'notification-click',
-              action: action,
-              voteType: voteType,
-              data: data
-            });
-            return client.focus();
-          } else {
-            return clients.openWindow('./');
-          }
-        })
-    );
-  } else {
-    event.waitUntil(
-      clients.matchAll({ type: 'window', includeUncontrolled: true })
-        .then(clientList => {
-          if (clientList.length > 0) {
-            return clientList[0].focus();
-          } else {
-            return clients.openWindow('./');
-          }
-        })
-    );
-  }
-});
-
-self.addEventListener('message', event => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
-  }
-
-});
-
-
-
-
-
-
