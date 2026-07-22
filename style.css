@@ -1,20 +1,20 @@
 /* ————————————————————————————————
    Mess Scheduler — design tokens
-   soft-modern · rich dark · saffron
+   soft-modern · midnight + sky
    ———————————————————————————————— */
 :root {
-  --ground: #171310;
-  --card: #251e16;
-  --raised: #332a1f;
-  --line: #3b3225;
-  --text: #f0eade;
-  --muted: #ac9f8b;
-  --faint: #786a58;
+  --ground: #10141b;
+  --card: #181e29;
+  --raised: #232b3a;
+  --line: #2b3446;
+  --text: #e9edf4;
+  --muted: #94a0b4;
+  --faint: #5f6b80;
 
-  --accent: #f0a35c;
-  --accent-soft: rgba(240, 163, 92, 0.13);
-  --accent-line: rgba(240, 163, 92, 0.42);
-  --accent-ink: #2a1c0c;
+  --accent: #6ecbf5;
+  --accent-soft: rgba(110, 203, 245, 0.12);
+  --accent-line: rgba(110, 203, 245, 0.40);
+  --accent-ink: #0a2231;
 
   --r-card: 20px;
   --r-inner: 12px;
@@ -25,11 +25,11 @@
 
 * { box-sizing: border-box; }
 
-/* ambient warmth across the whole viewport — the page never reads as a void */
+/* ambient sky glow across the whole viewport — the page never reads as a void */
 html {
   background:
-    radial-gradient(1200px 700px at 18% -10%, rgba(240, 163, 92, 0.08), transparent 62%),
-    radial-gradient(1000px 650px at 92% 112%, rgba(240, 163, 92, 0.06), transparent 60%),
+    radial-gradient(1200px 700px at 18% -10%, rgba(110, 203, 245, 0.09), transparent 62%),
+    radial-gradient(1000px 650px at 92% 112%, rgba(110, 203, 245, 0.06), transparent 60%),
     var(--ground);
   background-attachment: fixed;
   min-height: 100%;

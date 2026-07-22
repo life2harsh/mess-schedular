@@ -4,8 +4,8 @@
   "description": "Live hostel mess menu — what's serving now, what's next, and the week ahead.",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#171310",
-  "theme_color": "#171310",
+  "background_color": "#10141b",
+  "theme_color": "#10141b",
   "orientation": "portrait-primary",
   "icons": [
     {
