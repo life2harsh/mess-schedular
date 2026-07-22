@@ -19,8 +19,8 @@ const DAY_NAMES = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Frid
 
 const state = {
   campus: localStorage.getItem("campus") || "62",
-  menus: {},          // campus -> menu object
-  selectedOffset: 0,  // days from today (0..6 within the strip)
+  menus: {},         // campus -> menu object
+  selectedDay: 0,    // weekday index in the strip: 0 = Monday … 6 = Sunday
   stale: false,
 };
 
@@ -233,9 +233,20 @@ async function buildRatingRow(meal, votes) {
 
 const $ = (id) => document.getElementById(id);
 
-function dateAt(offset) {
+/* the strip is a fixed Monday→Sunday week */
+function todayIndex() {
+  return (new Date().getDay() + 6) % 7; // Mon = 0 … Sun = 6
+}
+
+function weekDate(index) {
   const d = new Date();
-  d.setDate(d.getDate() + offset);
+  d.setDate(d.getDate() - todayIndex() + index);
+  return d;
+}
+
+function tomorrowDate() {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
   return d;
 }
 
@@ -250,15 +261,15 @@ function renderDayStrip() {
   const strip = $("dayStrip");
   strip.innerHTML = "";
   for (let i = 0; i < 7; i++) {
-    const d = dateAt(i);
+    const d = weekDate(i);
     const chip = document.createElement("button");
     chip.className = "day-chip" +
-      (i === 0 ? " today" : "") +
-      (i === state.selectedOffset ? " selected" : "");
+      (i === todayIndex() ? " today" : "") +
+      (i === state.selectedDay ? " selected" : "");
     chip.innerHTML = `${DAY_NAMES[d.getDay()][0]}<b>${d.getDate()}</b>`;
     chip.setAttribute("aria-label", DAY_NAMES[d.getDay()]);
     chip.addEventListener("click", () => {
-      state.selectedOffset = i;
+      state.selectedDay = i;
       renderDayStrip();
       renderMenu();
     });
@@ -365,7 +376,7 @@ function todayHero(entry, tomorrowEntry) {
     }
   }
   if (tomorrowEntry && tomorrowEntry.breakfast) {
-    const w = scheduleFor(dateAt(1)).breakfast;
+    const w = scheduleFor(tomorrowDate()).breakfast;
     return {
       hero: {
         meal: "breakfast", entry: tomorrowEntry, live: false,
@@ -386,7 +397,7 @@ function renderMenu() {
   upcoming.innerHTML = "";
 
   const menu = state.menus[state.campus];
-  const date = dateAt(state.selectedOffset);
+  const date = weekDate(state.selectedDay);
   const { entry, stale } = entryFor(menu, date);
   $("stale").classList.toggle("hidden", !stale);
 
@@ -408,8 +419,8 @@ function renderMenu() {
 
   const sched = scheduleFor(date);
 
-  if (state.selectedOffset === 0) {
-    const tomorrow = entryFor(menu, dateAt(1)).entry;
+  if (state.selectedDay === todayIndex()) {
+    const tomorrow = entryFor(menu, tomorrowDate()).entry;
     const pick = todayHero(entry, tomorrow);
     if (pick) {
       hero.appendChild(heroCard(pick.hero));
@@ -419,7 +430,7 @@ function renderMenu() {
         if (!src[meal]) return;
         const card = nextCard({
           meal, entry: src, dayLabel: lbl,
-          time: scheduleFor(pick.afterEntry ? dateAt(1) : date)[meal].display,
+          time: scheduleFor(pick.afterEntry ? tomorrowDate() : date)[meal].display,
         });
         card.style.animationDelay = `${(i + 1) * 40}ms`;
         upcoming.appendChild(card);
@@ -471,6 +482,7 @@ function showSkeleton() {
 }
 
 async function boot() {
+  state.selectedDay = todayIndex();
   renderHeaderDate();
   renderDayStrip();
   bindCampusToggle();
@@ -483,7 +495,7 @@ async function boot() {
 
   /* re-evaluate the hero when a meal window opens/closes */
   setInterval(() => {
-    if (state.selectedOffset === 0) renderMenu();
+    if (state.selectedDay === todayIndex()) renderMenu();
   }, 60 * 1000);
 }
 

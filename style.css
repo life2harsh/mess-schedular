@@ -1,20 +1,20 @@
 /* ————————————————————————————————
    Mess Scheduler — design tokens
-   soft-modern · dark · mint
+   soft-modern · rich dark · saffron
    ———————————————————————————————— */
 :root {
-  --ground: #131413;
-  --card: #1c1e1c;
-  --raised: #262924;
-  --line: #2e332d;
-  --text: #eceee9;
-  --muted: #9aa196;
-  --faint: #667062;
+  --ground: #171310;
+  --card: #251e16;
+  --raised: #332a1f;
+  --line: #3b3225;
+  --text: #f0eade;
+  --muted: #ac9f8b;
+  --faint: #786a58;
 
-  --accent: #8fd6b0;
-  --accent-soft: rgba(143, 214, 176, 0.11);
-  --accent-line: rgba(143, 214, 176, 0.32);
-  --accent-ink: #0d241a;
+  --accent: #f0a35c;
+  --accent-soft: rgba(240, 163, 92, 0.13);
+  --accent-line: rgba(240, 163, 92, 0.42);
+  --accent-ink: #2a1c0c;
 
   --r-card: 20px;
   --r-inner: 12px;
@@ -25,7 +25,15 @@
 
 * { box-sizing: border-box; }
 
-html { background: var(--ground); }
+/* ambient warmth across the whole viewport — the page never reads as a void */
+html {
+  background:
+    radial-gradient(1200px 700px at 18% -10%, rgba(240, 163, 92, 0.08), transparent 62%),
+    radial-gradient(1000px 650px at 92% 112%, rgba(240, 163, 92, 0.06), transparent 60%),
+    var(--ground);
+  background-attachment: fixed;
+  min-height: 100%;
+}
 
 body {
   margin: 0 auto;
@@ -34,7 +42,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
-  background: var(--ground);
+  background: transparent;
   color: var(--text);
   font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
