@@ -1,0 +1,22 @@
+name: Bump service worker
+on:
+  push:
+    branches: [main]
+    paths: [mess_menu.json, mess_128_menu.json]
+permissions:
+  contents: write
+concurrency: bump-service-worker
+jobs:
+  bump:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          git pull --ff-only origin main
+          version="v$(date +%s)"
+          sed -i "1s/^const SW_VERSION = '.*';\$/const SW_VERSION = '$version';/" service-worker.js
+          head -n1 service-worker.js | grep -qx "const SW_VERSION = '$version';"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Bump service worker version to $version"
+          git push origin HEAD:main

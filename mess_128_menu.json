@@ -1,1 +1,58 @@
--
+{
+  "menu": {
+    "Monday": [
+      "Jeera Rice",
+      "Mix Dal",
+      "Paneer Do Piyaja",
+      "Chapati",
+      "Pickle",
+      "Salad",
+      "Payssam Kheer"
+    ],
+    "Tuesday": [
+      "Plain Rice",
+      "Rajmah Raseela",
+      "Malai Kofta",
+      "Chapati",
+      "Pickle",
+      "Salad",
+      "Veg Raita"
+    ],
+    "Wednesday": [
+      "Onion Rice",
+      "Punjabi Dal Tadka",
+      "Gobhi Matar",
+      "Chapati",
+      "Pickle",
+      "Salad",
+      "Jalebi"
+    ],
+    "Thursday": [
+      "Plain Rice",
+      "Chole",
+      "South Indian Aloo",
+      "Bhature",
+      "Pickle",
+      "Laccha Onion",
+      "Boondi Raita"
+    ],
+    "Friday": [
+      "Fried Rice",
+      "Manchurian",
+      "Noodle",
+      "Red Chilli Sauce",
+      "Tomato Sauce",
+      "",
+      ""
+    ],
+    "Saturday": [
+      "Jeera Rice",
+      "Black Chana",
+      "Sita Fal",
+      "Bedmi Puri",
+      "Pickle",
+      "Salad",
+      "Rice Kheer"
+    ]
+  }
+}
